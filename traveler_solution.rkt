@@ -1,0 +1,133 @@
+#lang scheme
+
+
+;---------------------------
+
+; In this function, I took a single argument (a location) and returned the list
+;involving the neighbor locations. First of all, I defined RAILWAY-CONNECTION and its argument
+;as a city. Then I defined the location of the argument that I will use. And, to contoll the matching
+;I use eq? . If it is matched then it will take neighbour locations. If not then it will return '().
+
+(define (RAILWAY-CONNECTION city)
+  (R-C city LOCATIONS))
+(define (R-C city locs)
+  (if [eq? city (caar locs)] [caddar locs] [if [null? (cdr locs)] '() [R-C city (cdr locs)]]))
+
+;takes a single argument (a location) and returns one night
+;accommodation cost in that location. First of all, I defined ACCOMMODATION-COST and its argument
+;as a city. Then I defined the location of the argument that I will use. And, to contoll the matching
+;I use eq? . If it is matched then it will take accommodation costs. If not then it will return '().
+
+
+(define (ACCOMMODATION-COST city)
+  (A-C city LOCATIONS))
+(define (A-C city locs)
+  (if [eq? city (caar locs)] [cadar locs] [if [null? (cdr locs)] '() [A-C city (cdr locs)]]))
+
+;takes a single argument (a traveler) and returns a list involving
+;his/her interested cities. First of all, I defined INTERESTED-CITIES and its argument
+;as a name. Then I defined the location of the argument that I will use. And, to contoll the matching
+;I use eq? . If it is matched then it will take name's interested cities. If not then it will return '().
+
+
+(define (INTERESTED-CITIES name)
+  (I-C name TRAVELERS))
+(define (I-C name trs)
+  (if [eq? name (caar trs)] [cadar trs] [if [null? (cdr trs)] '() [I-C name (cdr trs)]]))
+;takes a single argument (a traveler) and returns a list
+;involving his/her interested activities. First of all, I defined INTERESTED-ACTIVITIES and its argument
+;as a name. Then I defined the location of the argument that I will use. And, to contoll the matching
+;I use eq? . If it is matched then it will take name's interested activities. If not then it will return '().
+
+
+(define (INTERESTED-ACTIVITIES name)
+  (I-A name TRAVELERS))
+(define (I-A name trs)
+  (if [eq? name (caar trs)] [caddar trs] [if [null? (cdr trs)] '() [I-A name (cdr trs)]]))
+
+;takes a single argument (a traveler) and returns his/her hometown. First of all, I defined HOME and its argument
+;as a name. Then I defined the location of the argument that I will use. And, to contoll the matching
+;I use eq? . If it is matched then it will take name's hometown. If not then it will return '().
+
+
+(define (HOME name)
+  (H name TRAVELERS))
+(define (H name trs)
+  (if [eq? name (caar trs)] [car (cdddar trs)] [if [null? (cdr trs)] '() [H name (cdr trs)]]))
+
+;takes a single argument (a location) and returns a list involving the
+;travelers whose hometown is that location. First of all, I defined TRAVELER-FROM and its argument
+;as a name. Then I defined the location of the argument that I will use. And, to contoll the matching
+;I use eq? . And, for more matching I use cons() to keep more than one values.
+;If it is matched then it will take that location and continue to search. If no matching then it will return '().
+
+
+(define (TRAVELER-FROM city)
+  (T-F city TRAVELERS))
+(define (T-F city trs)
+  (if [eq? city (car (cdddar trs))] [cons (caar trs) (T-F city (cdr trs))] [if [null? (cdr trs)] '() [T-F city (cdr trs)]]))
+
+;takes a single argument (a city) and returns a list of travelers
+;who wants to visit that city. First of all, I defined INTERESTED-IN-CITY and its argument
+;as a city. Then I defined the location of the argument that I will use.And I use memq if any element matching with
+;this city. And, for more matching I use cons() to keep more than one values.
+;If it is matched then it will take that location and continue to search. If no matching then it will return '().
+
+
+(define (INTERESTED-IN-CITY city)
+  (I-I-C city TRAVELERS))
+(define (I-I-C city trs)
+  (if [memq city (cadar trs)] [cons (caar trs) (I-I-C city (cdr trs))] [if [null? (cdr trs)] '() [I-I-C city (cdr trs)]]))
+
+
+;takes a single argument (an activity) and returns a list
+;of travelers who enjoy that activity. First of all, I defined INTERESTED-IN-ACTIVITY and its argument
+;as an act. Then I defined the location of the argument that I will use.And I use memq if any element matching with
+;this city. And, for more matching I use cons() to keep more than one values.
+;If it is matched then it will take that location and continue to search. If no matching then it will return '().
+
+(define (INTERESTED-IN-ACTIVITY act)
+  (I-I-A act TRAVELERS))
+(define (I-I-A act trs)
+  (if [null? trs] '()
+  (if [memq act (caddr (car trs))] [cons (caar trs) (I-I-A act (cdr trs))]
+      [I-I-A act (cdr trs)])))
+
+; In this function, I took two arguments (two limits) and returns the list of
+;cities whose accommodation costs are between these limits, inclusively.
+;First of all, I defined IN-BETWEEN and its arguments
+;as num num2. Then I defined the location of the argument that I will use. And, to contoll the matching
+;I use >= and <=  . If it is matched then it will take the accommodation costs are between num and num2.
+;If not then it will return '().
+
+
+(define (IN-BETWEEN num num2)
+  (I-B num num2 LOCATIONS))
+(define (I-B num num2 locs)
+  (if [<= num (cadar locs)] [cons (caar locs) (I-B num num2 (cdr locs))]
+  (if [>= num2 (cadar locs)] [cons (caar locs) (I-B num num2 (cdr locs))] '())))
+      
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
